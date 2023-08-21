@@ -1,4 +1,4 @@
-# What is Data science? 
+# What is Data Science? 
 
 # 1. Definition
 Data science is a combination of multidisciplinary fields of mathematics, statistics, artificial intelligence, and computer science that aims to extract meaningful insights from big data. 
