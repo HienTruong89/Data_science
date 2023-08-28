@@ -1,11 +1,4 @@
-# What is Data Science? 
-
-# 1. Definition
-Data science is a combination of multidisciplinary fields of mathematics, statistics, artificial intelligence, and computer science that aims to extract meaningful insights from big data. 
-
-![image](https://github.com/HienTruong89/Data_science/assets/57845157/6de11751-1dbb-4c99-ae45-770aa4df76d4)
-
-# 2. Start to work with data science using Python
+# 1. Start to work with data science using Python
 
 In this home GitHub, four approaches of data science are mainly focused on:
 
@@ -15,11 +8,17 @@ In this home GitHub, four approaches of data science are mainly focused on:
 - Image processing 
 
 For each subject, basic Python codes were developed on a public dataset. The findings were presented on the PowerPoint slides attached. 
-This could help beginners start to work with data science. 
+This could help beginners start working with data science. 
 
-# 3. How data science benefits business and scientific research
+# 2. How data science benefits business and scientific research
 
-Let's learn and find out together from the results of the examples used above. 
+Let's learn and find out together how data science benefits business and research.
+
+To answer this question, we just need to work with data, such as through exploratory data analysis and building predictive models. 
+From the insights, we can see trends and correlations between variables in the data. 
+Then the models help us predict the future trend based on the current dataset. 
+
+
 
 
 
