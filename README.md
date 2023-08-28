@@ -19,6 +19,3 @@ This could help beginners start working with data science.
 
 # Note: 
 This project is still ongoing development. Please don't hesitate to give comments for future improvements.   
-# Reference 
-1. Amazon, 2023. What is Data Science? https://aws.amazon.com/what-is/data-science/
-2. 
