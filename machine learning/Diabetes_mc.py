@@ -16,13 +16,14 @@ data.head()
 data.describe()
 
 # Exploratory data
+data['target']=target
 corr=data.corr()
 sns.heatmap(corr,annot=True)
 
 ax=sns.boxplot(data)
 ax.set_xticklabels(ax.get_xticklabels(),rotation=90)
 
-data['target']=target
+
 q_25=data.quantile(0.25)
 q_75=data.quantile(0.75)
 IQR=q_75-q_25
@@ -36,6 +37,12 @@ data_c=data[~((data>upper)\
 ax=sns.boxplot(data_c.drop('target',axis=1))
 ax.set_xticklabels(ax.get_xticklabels(),rotation=90)
 
+# Visualisation 
+fig,ax=plt.subplots(figsize=(10,8))
+plt.scatter(data_c['glu'],data_c['target'])
+plt.xlabel('glu')
+plt.ylabel('Disease progression after 1 year baseline')
+
 ## Build regression models
 from sklearn.model_selection import train_test_split
 
@@ -47,74 +54,22 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import math
 
-lm=LinearRegression().fit(x_train,y_train) ## need to check from here
+lm=LinearRegression().fit(x_train,y_train) 
 print('Training score:',lm.score(x_train,y_train)) ## R-square
 predictors=x_train.columns
 
 coef=pd.Series(lm.coef_,predictors).sort_values()
 print(coef)
 y_pred=lm.predict(x_test)
-pd_actual=pd.DataFrame({'actual':y_test,'predicted':y_pred})
+pd_actual=pd.DataFrame({'actual':y_test,'predicted':y_pred,'sex':x_test['sex']})
 print('Testing score:',r2_score(y_test,y_pred))
 # scater plot
 fig, ax=plt.subplots()
 sns.scatterplot(data=pd_actual,x='actual',y='predicted')
+ax.plot(np.linspace(min(y_test), max(y_test), 100), np.linspace(min(y_test), max(y_test), 100), color='black', linestyle='--')
+ax.set_xlabel('diabete progression measured')
+ax.set_ylabel('diabete progression predicted')
+r2 = r2_score(y_test, y_pred)
+ax.text(min(pd_actual['actual']),max(pd_actual['predicted']), f'R2 = {r2:.2f}',fontsize=12)
 
-
-# Partial Lineaar Regression 
-from sklearn.cross_decomposition import PLSRegression
-from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score,cross_val_predict
-
-cv=KFold(n_splits=5,shuffle=True,random_state=1)
-mse=[]
-for i in range(1,7):
-    pls=PLSRegression(n_components=i)
-    score=-1*cross_val_score(pls,x_train,y_train,cv=cv,
-                            scoring='neg_mean_squared_error').mean()
-    mse.append(score)
-
-plt.plot(mse)
-plt.xlabel('Number of PLS Components')
-plt.ylabel('MSE')
-plt.title('Latent variables')
-
-pls=PLSRegression(n_components=2)
-model=pls.fit(x_train,y_train)
-y_pred_cv=cross_val_predict(pls,x_train,y_train,cv=cv).reshape(-1)
-mse_cv = np.sqrt(mean_squared_error(y_train, y_pred_cv))
-r2_cv=r2_score(y_train,y_pred_cv) 
-y_pred=model.predict(x_test).reshape(-1)
-mse_pred=np.sqrt(mean_squared_error(y_test,y_pred))
-r2_pred=r2_score(y_test,y_pred)
-print('Results of cross validation:',r2_cv,mse_cv)
-print('Results of prediction:',r2_pred,mse_pred)
-
-
-res=np.array(y_pred_cv - y_train)
-fig,axs=plt.subplots(ncols=2,figsize=(8,4))
-axs[0].scatter(y_train,y_pred_cv) 
-axs[0].plot(np.linspace(min(y_train), max(y_train), 100), np.linspace(min(y_train), max(y_train), 100), color='black', linestyle='--')
-axs[0].set_xlabel("True ")
-axs[0].set_ylabel("Predicted")
-axs[1].scatter(y_pred_cv,res)
-axs[1].axhline(y=0,color='black',linestyle='--')
-axs[1].set_xlabel("Predicted")
-axs[1].set_ylabel ("Residuals")
-plt.tight_layout()
-plt.show()    
-
-
-res=np.array(y_pred - y_test)
-fig,axs=plt.subplots(ncols=2,figsize=(8,4))
-axs[0].scatter(y_test,y_pred) 
-axs[0].plot(np.linspace(min(y_test), max(y_test), 100), np.linspace(min(y_test), max(y_test), 100), color='black', linestyle='--')
-axs[0].set_xlabel("True ")
-axs[0].set_ylabel("Predicted")
-axs[0].text(min(y_test), max(y_pred), f'R2 = {r2_score(y_test, y_pred):.2f}', fontsize=12)
-axs[1].scatter(y_pred,res)
-axs[1].axhline(y=0,color='black',linestyle='--')
-axs[1].set_xlabel("Predicted")
-axs[1].set_ylabel ("Residuals")
-plt.tight_layout()
-plt.show()    
+sns.lmplot(data=pd_actual,x='actual',y='predicted',hue='sex')
