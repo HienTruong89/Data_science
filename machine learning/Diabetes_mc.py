@@ -33,6 +33,9 @@ lower=q_25-1.5*IQR
 
 data_c=data[~((data>upper)\
               |(data<lower)).any(axis=1)]
+# Or
+ind=((data>upper) | (data<lower)).any(axis=1)
+data_cx=data[~ind]
 
 ax=sns.boxplot(data_c.drop('target',axis=1))
 ax.set_xticklabels(ax.get_xticklabels(),rotation=90)
