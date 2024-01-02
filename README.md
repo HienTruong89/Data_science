@@ -1,4 +1,4 @@
-# Start to work with data science using Python
+# Ready to work with data science using Python
 
 In this home GitHub, four approaches of data science are mainly focused on:
 
