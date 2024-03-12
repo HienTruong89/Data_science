@@ -1,6 +1,6 @@
 # Ready to work with data science using Python
 
-In this home GitHub, four approaches of data science are mainly focused on:
+In this home GitHub, two approaches of data science are mainly focused on:
 
 - Machine learning
 - Deep learning
